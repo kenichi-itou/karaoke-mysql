@@ -1,0 +1,51 @@
+<h1>予約カレンダー</h1>
+<%= month_calendar(events: @reservations, attribute: :date, end_attribute: :date) do |date, reservations| %>
+  <div class="calendar-day">
+    <div class="date-number"><%= date.day %></div>
+    <% reservations.each do |reservation| %>
+      <div class="reservation-entry">
+        <%= link_to "#{reservation.start_time.strftime('%H:%M')} #{reservation.facility}", reservation %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<hr>
+
+<h1>予約状況一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>日付</th>
+      <th>時間</th>
+      <th>設備</th>
+      <th>部屋番号</th>
+      <th>予約者名</th>
+      <th>大人</th>
+      <th>子供</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reservations.each do |reservation| %>
+      <tr>
+        <td><%= reservation.date.strftime("%Y/%m/%d") %></td>
+        <td><%= reservation.start_time.strftime("%H:%M") %> - <%= reservation.end_time.strftime("%H:%M") %></td>
+        <td><%= reservation.facility %></td>
+        <td><%= reservation.room_number %></td>
+        <td><%= reservation.name %></td>
+        <td><%= reservation.adult_count %></td>
+        <td><%= reservation.child_count %></td>
+        <td>
+          <%= link_to "詳細", reservation %>
+          <%= link_to "編集", edit_reservation_path(reservation) %>
+          <%= link_to "削除", reservation, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "新規予約", new_reservation_path %>

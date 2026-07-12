@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>KaraokeMysql</title>
+    <title>うたスタ予約 | マンションカラオケルーム予約システム</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,6 +11,25 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="brand">🎤 うたスタ予約</div>
+          <div class="hero-tagline">マンション共用カラオケルーム予約システム</div>
+        </div>
+        <nav class="hero-nav">
+          <%= link_to "予約一覧・カレンダー", reservations_path %>
+          <%= link_to "新規予約", new_reservation_path %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <% if notice %>
+        <p class="flash-notice"><%= notice %></p>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

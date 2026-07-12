@@ -1,8 +1,7 @@
 <%= form_with(model: reservation) do |form| %>
   <% if reservation.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
-
+    <div class="flash-error-box">
+      <h2><%= pluralize(reservation.errors.count, "件") %>のエラーにより保存できませんでした</h2>
       <ul>
         <% reservation.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,54 +10,57 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :date %>
-    <%= form.date_field :date %>
-  </div>
+  <div class="form-card">
+    <div class="field-row">
+      <div class="field-group">
+        <div class="field-label">📅 利用日</div>
+        <%= form.date_field :date %>
+      </div>
+      <div class="field-group">
+        <div class="field-label">🕒 開始時間</div>
+        <%= form.time_field :start_time %>
+      </div>
+      <div class="field-group">
+        <div class="field-label">🕒 終了時間</div>
+        <%= form.time_field :end_time %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :start_time %>
-    <%= form.time_field :start_time %>
-  </div>
+    <div class="field-row">
+      <div class="field-group">
+        <div class="field-label">🎶 利用設備</div>
+        <%= form.select :facility, [["カラオケ", "karaoke"], ["バーベキュー", "bbq"]] %>
+      </div>
+      <div class="field-group">
+        <div class="field-label">🚪 部屋番号</div>
+        <%= form.text_field :room_number, placeholder: "例: 1234" %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :end_time %>
-    <%= form.time_field :end_time %>
-  </div>
+    <div class="field-row">
+      <div class="field-group">
+        <div class="field-label">👤 予約者名</div>
+        <%= form.text_field :name, placeholder: "例: ヤマダ タロウ" %>
+      </div>
+      <div class="field-group">
+        <div class="field-label">📞 電話番号</div>
+        <%= form.text_field :phone, placeholder: "例: 090-1234-5678" %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
+    <div class="field-row">
+      <div class="field-group">
+        <div class="field-label">🧑‍🤝‍🧑 大人の人数</div>
+        <%= form.number_field :adult_count, min: 0 %>
+      </div>
+      <div class="field-group">
+        <div class="field-label">🧒 子供の人数</div>
+        <%= form.number_field :child_count, min: 0 %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :room_number %>
-    <%= form.text_field :room_number %>
+    <div>
+      <%= form.submit(reservation.persisted? ? "この内容で更新する" : "この内容で予約する", class: "btn") %>
+    </div>
   </div>
-
-  <div>
-    <%= form.label :phone %>
-    <%= form.text_field :phone %>
-  </div>
-
-  <div>
-    <%= form.label :facility %>
-    # <%= form.text_field :facility %>
-    <%= form.select :facility, [["カラオケ","karaoke"], ["バーベキュー","bbq"]] %>
-  </div>
-
-  <div>
-    <%= form.label :adult_count %>
-    <%= form.number_field :adult_count %>
-  </div>
-
-  <div>
-    <%= form.label :child_count %>
-    <%= form.number_field :child_count %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-
 <% end %>

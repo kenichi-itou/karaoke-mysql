@@ -1,10 +1,46 @@
-<p style="color: green"><%= notice %></p>
+<% if notice.present? %>
+  <div class="flash-notice"><%= notice %></div>
+<% end %>
 
-<%= render @reservation %>
+<div class="section-title"><span class="dot"></span>予約詳細</div>
 
-<div>
-  <%= link_to "Edit this reservation", edit_reservation_path(@reservation) %> |
-  <%= link_to "Back to reservations", reservations_path %>
+<div class="receipt">
+  <div class="receipt-top">
+    <div class="brand">🎤 うたスタ 予約チケット</div>
+    <div class="hero-tagline"><%= @reservation.date.strftime("%Y年%-m月%-d日") %>（<%= %w[日 月 火 水 木 金 土][@reservation.date.wday] %>）</div>
+  </div>
 
-  <%= button_to "Destroy this reservation", @reservation, method: :delete %>
+  <div class="receipt-body">
+    <div class="receipt-row">
+      <span class="label">🕒 時間</span>
+      <span class="value"><%= @reservation.start_time.strftime("%H:%M") %> 〜 <%= @reservation.end_time.strftime("%H:%M") %></span>
+    </div>
+    <div class="receipt-row">
+      <span class="label">🎶 利用設備</span>
+      <span class="value"><%= @reservation.facility == "karaoke" ? "カラオケ" : "バーベキュー" %></span>
+    </div>
+    <div class="receipt-row">
+      <span class="label">🚪 部屋番号</span>
+      <span class="value"><%= @reservation.room_number %></span>
+    </div>
+    <div class="receipt-row">
+      <span class="label">👤 予約者名</span>
+      <span class="value"><%= @reservation.name %></span>
+    </div>
+    <div class="receipt-row">
+      <span class="label">📞 電話番号</span>
+      <span class="value"><%= @reservation.phone %></span>
+    </div>
+    <div class="receipt-row">
+      <span class="label">🧑‍🤝‍🧑 人数</span>
+      <span class="value">大人 <%= @reservation.adult_count %>名 ・ 子供 <%= @reservation.child_count %>名</span>
+    </div>
+  </div>
+
+  <div class="receipt-actions">
+    <%= link_to "この予約を編集", edit_reservation_path(@reservation), class: "btn" %>
+    <%= button_to "予約を削除", @reservation, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "この予約を削除しますか？" } } %>
+  </div>
 </div>
+
+<%= link_to "← 予約一覧に戻る", reservations_path, class: "link-back" %>

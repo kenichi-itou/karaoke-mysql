@@ -1,57 +1,343 @@
-.simple-calendar {
-  max-width: 700px;
-  margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+:root {
+  --stage-navy: #1F2247;
+  --stage-navy-light: #34386b;
+  --neon-coral: #FF6F61;
+  --neon-coral-dark: #e85a4d;
+  --marquee-gold: #FFC94D;
+  --paper: #FBF9F5;
+  --card: #FFFFFF;
+  --ink: #2B2B38;
+  --ink-soft: #6b6b78;
+  --line: #E7E3DA;
 }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans JP", sans-serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3, .brand {
+  font-family: "M PLUS Rounded 1c", "Noto Sans JP", sans-serif;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* ---------- Hero header ---------- */
+.hero {
+  background: radial-gradient(circle at 15% 20%, rgba(255,111,97,0.35), transparent 45%),
+              radial-gradient(circle at 85% 80%, rgba(255,201,77,0.25), transparent 50%),
+              var(--stage-navy);
+  color: #fff;
+  padding: 36px 24px;
+  margin-bottom: 28px;
+}
+.hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.brand {
+  font-size: 1.5em;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-tagline {
+  font-size: 0.85em;
+  color: rgba(255,255,255,0.75);
+  margin-top: 2px;
+}
+.hero-nav a {
+  color: #fff;
+  text-decoration: none;
+  background: rgba(255,255,255,0.12);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+.hero-nav a:hover { background: rgba(255,255,255,0.25); }
+
+/* ---------- Section headings ---------- */
+.section-title {
+  font-size: 1.3em;
+  font-weight: 700;
+  margin: 8px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--neon-coral);
+  display: inline-block;
+}
+
+/* ---------- Flash / notice ---------- */
+.flash-notice {
+  background: #EAF7EE;
+  color: #276B3B;
+  border: 1px solid #BFE6CB;
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+.flash-error-box {
+  background: #FDEEEC;
+  border: 1px solid #F6C7C1;
+  color: #A3372B;
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.flash-error-box h2 { margin: 0 0 8px; font-size: 1em; }
+.flash-error-box ul { margin: 0; padding-left: 20px; }
+
+/* ---------- Calendar ---------- */
+.simple-calendar {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 100%;
+}
+.calendar-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.calendar-heading a {
+  color: var(--neon-coral-dark);
+  text-decoration: none;
+  font-size: 0.85em;
+  background: #FFF1EF;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.calendar-title { color: var(--ink); font-size: 1.05em; }
 
 .simple-calendar table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-
-.simple-calendar th, .simple-calendar td {
-  border: 1px solid #ccc;
-  vertical-align: top;
-  padding: 5px;
-  height: 90px;
-  width: 14%;
-}
-
 .simple-calendar th {
-  background-color: #f5f5f5;
+  font-size: 0.8em;
+  color: var(--ink-soft);
+  font-weight: 700;
+  padding: 8px 4px;
   text-align: center;
+  border-bottom: 2px solid var(--line);
 }
-
-.simple-calendar td.today {
-  background-color: #fffae0;
+.simple-calendar td {
+  vertical-align: top;
+  padding: 6px;
+  height: 92px;
+  width: 14.28%;
+  border: 1px solid var(--line);
 }
-
 .simple-calendar td.prev-month,
-.simple-calendar td.next-month {
-  background-color: #f9f9f9;
-  color: #999;
+.simple-calendar td.next-month { background: #FAFAF8; color: #bbb; }
+.simple-calendar td.today {
+  background: #FFF9EC;
+  box-shadow: inset 0 0 0 2px var(--marquee-gold);
+  border-radius: 8px;
 }
-
 .date-number {
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 0.9em;
   margin-bottom: 4px;
 }
 
+/* ---------- Ticket-style reservation chip (signature element) ---------- */
 .reservation-entry {
-  font-size: 0.8em;
-  background-color: #e0f0ff;
-  border-radius: 3px;
-  padding: 2px 4px;
-  margin-bottom: 2px;
+  position: relative;
+  display: block;
+  background: #FFF1EF;
+  border-left: 3px dashed var(--neon-coral);
+  border-radius: 4px 8px 8px 4px;
+  padding: 3px 8px 3px 10px;
+  margin-bottom: 4px;
+  font-size: 0.72em;
+  line-height: 1.3;
 }
-
 .reservation-entry a {
-  color: #0056b3;
+  color: var(--neon-coral-dark);
   text-decoration: none;
+  font-weight: 600;
+}
+.reservation-entry::before {
+  content: "";
+  position: absolute;
+  left: -4px; top: 50%;
+  width: 6px; height: 6px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transform: translateY(-50%);
 }
 
-.calendar-heading {
-  text-align: center;
-  font-size: 1.2em;
-  margin-bottom: 10px;
+/* ---------- Reservation list (cards) ---------- */
+.reservation-list { display: flex; flex-direction: column; gap: 12px; margin: 0 0 24px; }
+.ticket-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px dashed var(--neon-coral);
+  border-radius: 6px 16px 16px 6px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ticket-main { display: flex; flex-direction: column; gap: 2px; }
+.ticket-date { font-weight: 700; font-size: 1.05em; }
+.ticket-meta { color: var(--ink-soft); font-size: 0.88em; }
+.ticket-badge {
+  background: var(--stage-navy);
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.ticket-actions a {
+  font-size: 0.85em;
+  text-decoration: none;
+  color: var(--ink-soft);
+  margin-left: 12px;
+}
+.ticket-actions a:first-child { margin-left: 0; }
+.ticket-actions a.danger { color: #C24B3F; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--neon-coral), var(--neon-coral-dark));
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: none;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(255,111,97,0.35);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255,111,97,0.45); }
+.btn-ghost {
+  background: none;
+  box-shadow: none;
+  color: var(--ink-soft);
+  padding: 12px 20px;
+}
+.btn-danger {
+  background: linear-gradient(135deg, #E8574A, #C24B3F);
+}
+.link-back {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.link-back:hover { color: var(--ink); }
+
+/* ---------- Forms ---------- */
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px 28px 32px;
+}
+.field-group { margin-bottom: 20px; }
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.9em;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.field-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.field-row .field-group { flex: 1; min-width: 160px; }
+
+input[type="text"], input[type="date"], input[type="time"],
+input[type="number"], input[type="tel"], select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1em;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--marquee-gold);
+  box-shadow: 0 0 0 3px rgba(255,201,77,0.3);
+}
+
+/* ---------- Show page (ticket receipt) ---------- */
+.receipt {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 0;
+  overflow: hidden;
+  max-width: 480px;
+}
+.receipt-top {
+  background: var(--stage-navy);
+  color: #fff;
+  padding: 24px 28px;
+}
+.receipt-top .brand { font-size: 1.1em; }
+.receipt-body { padding: 24px 28px; }
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 0.95em;
+}
+.receipt-row:last-child { border-bottom: none; }
+.receipt-row .label { color: var(--ink-soft); }
+.receipt-row .value { font-weight: 700; }
+.receipt-actions {
+  padding: 20px 28px 28px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }

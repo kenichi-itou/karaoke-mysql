@@ -1,10 +1,5 @@
-<h1>Editing reservation</h1>
+<div class="section-title"><span class="dot"></span>予約の編集</div>
 
 <%= render "form", reservation: @reservation %>
 
-<br>
-
-<div>
-  <%= link_to "Show this reservation", @reservation %> |
-  <%= link_to "Back to reservations", reservations_path %>
-</div>
+<%= link_to "← 予約一覧に戻る", reservations_path, class: "link-back" %>

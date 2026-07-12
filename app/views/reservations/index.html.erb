@@ -12,40 +12,30 @@
 
 <hr>
 
-<h1>予約状況一覧</h1>
+<div class="section-title"><span class="dot"></span>予約状況一覧</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>日付</th>
-      <th>時間</th>
-      <th>設備</th>
-      <th>部屋番号</th>
-      <th>予約者名</th>
-      <th>大人</th>
-      <th>子供</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @reservations.each do |reservation| %>
-      <tr>
-        <td><%= reservation.date.strftime("%Y/%m/%d") %></td>
-        <td><%= reservation.start_time.strftime("%H:%M") %> - <%= reservation.end_time.strftime("%H:%M") %></td>
-        <td><%= reservation.facility %></td>
-        <td><%= reservation.room_number %></td>
-        <td><%= reservation.name %></td>
-        <td><%= reservation.adult_count %></td>
-        <td><%= reservation.child_count %></td>
-        <td>
+<div class="reservation-list">
+  <% @reservations.each do |reservation| %>
+    <div class="ticket-card">
+      <div class="ticket-main">
+        <div class="ticket-date"><%= reservation.date.strftime("%Y/%m/%d (%a)") %></div>
+        <div class="ticket-meta">
+          <%= reservation.start_time.strftime("%H:%M") %> - <%= reservation.end_time.strftime("%H:%M") %>
+          ・<%= reservation.room_number %>号室
+          ・<%= reservation.name %>
+          ・大人<%= reservation.adult_count %>/子供<%= reservation.child_count %>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="ticket-badge"><%= reservation.facility %></span>
+        <div class="ticket-actions">
           <%= link_to "詳細", reservation %>
           <%= link_to "編集", edit_reservation_path(reservation) %>
-          <%= link_to "削除", reservation, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          <%= link_to "削除", reservation, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" }, class: "danger" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
 
-<%= link_to "新規予約", new_reservation_path %>
+<%= link_to "🎤 新しく予約する", new_reservation_path, class: "btn" %>

@@ -1,6 +1,9 @@
 <% wday = %w[日 月 火 水 木 金 土] %>
 
-<h1>予約カレンダー</h1>
+<div class="index-header">
+  <h1>予約カレンダー</h1>
+  <%= link_to "🎤 新しく予約する", new_reservation_path, class: "btn" %>
+</div>
 <%= month_calendar(events: @reservations, attribute: :date, end_attribute: :date) do |date, reservations| %>
   <div class="calendar-day">
     <div class="date-number"><%= date.day %></div>
@@ -66,8 +69,4 @@
       📅 カレンダーの<strong>予約済みの日</strong>をクリックすると、その日の予約状況がここに表示されます。
     </div>
   <% end %>
-</div>
-
-<div class="index-actions">
-  <%= link_to "🎤 新しく予約する", new_reservation_path, class: "btn" %>
 </div>

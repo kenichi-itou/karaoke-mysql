@@ -269,7 +269,14 @@ h1, h2, h3, .brand {
   font-size: 0.95em;
   text-align: center;
 }
-.index-actions { margin-top: 8px; }
+.index-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.index-header h1 { margin: 0; }
 
 /* ---------- Reservation list (cards) ---------- */
 .reservation-list { display: flex; flex-direction: column; gap: 12px; margin: 0 0 24px; }

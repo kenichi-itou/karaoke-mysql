@@ -239,6 +239,38 @@ h1, h2, h3, .brand {
   transform: translateY(-50%);
 }
 
+/* ---------- Calendar day link (click to open day panel) ---------- */
+.day-link {
+  display: block;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 2px;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+  cursor: pointer;
+}
+.day-link:hover { background: rgba(255,111,97,0.10); }
+.day-link.is-selected {
+  background: rgba(255,111,97,0.15);
+  box-shadow: inset 0 0 0 2px var(--neon-coral);
+}
+.day-link .reservation-entry { color: var(--neon-coral-dark); font-weight: 600; }
+
+/* ---------- Day panel (selected date reservations) ---------- */
+.day-panel {
+  margin: 24px 0;
+  scroll-margin-top: 20px;
+}
+.day-panel-hint {
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 22px 24px;
+  color: var(--ink-soft);
+  font-size: 0.95em;
+  text-align: center;
+}
+.index-actions { margin-top: 8px; }
+
 /* ---------- Reservation list (cards) ---------- */
 .reservation-list { display: flex; flex-direction: column; gap: 12px; margin: 0 0 24px; }
 .ticket-card {

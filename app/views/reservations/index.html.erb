@@ -1,56 +1,73 @@
+<% wday = %w[日 月 火 水 木 金 土] %>
+
 <h1>予約カレンダー</h1>
 <%= month_calendar(events: @reservations, attribute: :date, end_attribute: :date) do |date, reservations| %>
   <div class="calendar-day">
     <div class="date-number"><%= date.day %></div>
-    <% reservations.each do |reservation| %>
-      <div class="reservation-entry">
-        <% if owner_or_admin?(reservation) %>
-          <%= link_to "#{reservation.start_time.strftime('%H:%M')} #{reservation.facility_label}", reservation %>
-        <% else %>
-          <span><%= reservation.start_time.strftime('%H:%M') %> <%= reservation.facility_label %></span>
+    <% if reservations.any? %>
+      <%= link_to reservations_path(date: date.iso8601, anchor: "day-panel"),
+                  class: "day-link#{' is-selected' if @selected_date == date}" do %>
+        <% reservations.each do |reservation| %>
+          <span class="reservation-entry"><%= reservation.start_time.strftime('%H:%M') %> <%= reservation.facility_label %></span>
         <% end %>
-      </div>
+      <% end %>
     <% end %>
   </div>
 <% end %>
 
-<hr>
+<div id="day-panel" class="day-panel">
+  <% if @selected_date %>
+    <div class="section-title">
+      <span class="dot"></span>
+      <%= @selected_date.strftime("%Y年%-m月%-d日") %>（<%= wday[@selected_date.wday] %>）の予約状況
+    </div>
 
-<div class="section-title"><span class="dot"></span>予約状況一覧</div>
-
-<div class="reservation-list">
-  <% @reservations.each do |reservation| %>
-    <div class="ticket-card">
-      <div class="ticket-main">
-        <div class="ticket-date">
-          <%= reservation.date.strftime("%Y/%m/%d (%a)") %>
-          <% if owner_or_admin?(reservation) %>
-            <span class="mine-badge"><%= current_user.admin? ? "管理" : "自分の予約" %></span>
-          <% end %>
-        </div>
-        <div class="ticket-meta">
-          <%= reservation.start_time.strftime("%H:%M") %> - <%= reservation.end_time.strftime("%H:%M") %>
-          <% if owner_or_admin?(reservation) %>
-            ・<%= reservation.room_number %>号室
-            ・<%= reservation.name %>
-            ・大人<%= reservation.adult_count %>/子供<%= reservation.child_count %>
-          <% else %>
-            ・予約済み
-          <% end %>
-        </div>
-      </div>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span class="ticket-badge"><%= reservation.facility_label %></span>
-        <% if owner_or_admin?(reservation) %>
-          <div class="ticket-actions">
-            <%= link_to "詳細", reservation %>
-            <%= link_to "編集", edit_reservation_path(reservation) %>
-            <%= link_to "削除", reservation, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" }, class: "danger" %>
+    <% if @day_reservations.any? %>
+      <div class="reservation-list">
+        <% @day_reservations.each do |reservation| %>
+          <div class="ticket-card">
+            <div class="ticket-main">
+              <div class="ticket-date">
+                <%= reservation.start_time.strftime("%H:%M") %> 〜 <%= reservation.end_time.strftime("%H:%M") %>
+                <% if owner_or_admin?(reservation) %>
+                  <span class="mine-badge"><%= current_user.admin? ? "管理" : "自分の予約" %></span>
+                <% end %>
+              </div>
+              <div class="ticket-meta">
+                <% if owner_or_admin?(reservation) %>
+                  <%= reservation.room_number %>号室
+                  ・<%= reservation.name %>
+                  ・大人<%= reservation.adult_count %>/子供<%= reservation.child_count %>
+                <% else %>
+                  予約済み
+                <% end %>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="ticket-badge"><%= reservation.facility_label %></span>
+              <% if owner_or_admin?(reservation) %>
+                <div class="ticket-actions">
+                  <%= link_to "詳細", reservation %>
+                  <%= link_to "編集", edit_reservation_path(reservation) %>
+                  <%= link_to "削除", reservation, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" }, class: "danger" %>
+                </div>
+              <% end %>
+            </div>
           </div>
         <% end %>
       </div>
+    <% else %>
+      <p>この日の予約はありません。</p>
+    <% end %>
+
+    <%= link_to "× 選択を解除", reservations_path, class: "link-back" %>
+  <% else %>
+    <div class="day-panel-hint">
+      📅 カレンダーの<strong>予約済みの日</strong>をクリックすると、その日の予約状況がここに表示されます。
     </div>
   <% end %>
 </div>
 
-<%= link_to "🎤 新しく予約する", new_reservation_path, class: "btn" %>
+<div class="index-actions">
+  <%= link_to "🎤 新しく予約する", new_reservation_path, class: "btn" %>
+</div>

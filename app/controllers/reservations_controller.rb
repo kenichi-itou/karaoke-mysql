@@ -6,6 +6,12 @@ class ReservationsController < ApplicationController
   # GET /reservations or /reservations.json
   def index
     @reservations = Reservation.order(:date, :start_time)
+
+    # カレンダーで日付が選択されたら、その日の予約状況を表示
+    if params[:date].present?
+      @selected_date = Date.parse(params[:date]) rescue nil
+      @day_reservations = Reservation.where(date: @selected_date).order(:start_time) if @selected_date
+    end
   end
 
   # GET /reservations/1 or /reservations/1.json

@@ -1,3 +1,12 @@
 <div class="section-title"><span class="dot"></span>新規予約</div>
 <%= render "form", reservation: @reservation %>
+
+<div class="notice-box">
+  <div class="notice-title">⚠️ ご利用にあたっての注意事項</div>
+  <ul>
+    <li>共用施設使用規則の各条項を遵守してください。</li>
+    <li>施設使用にあたり、火気には十分に注意してください。</li>
+  </ul>
+</div>
+
 <%= link_to "← 予約一覧に戻る", reservations_path, class: "link-back" %>

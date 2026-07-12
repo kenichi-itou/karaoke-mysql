@@ -6,7 +6,7 @@ class Reservation < ApplicationRecord
   validate :check_people
 
   def facility_label
-    facility == "karaoke" ? "カラオケ" : "バーベキュー"
+    facility == "karaoke" ? "カラオケルーム" : "バーベキューコーナー"
   end
 
   def no_overlap

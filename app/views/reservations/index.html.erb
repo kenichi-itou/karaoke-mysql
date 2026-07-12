@@ -40,7 +40,7 @@
                 <% if owner_or_admin?(reservation) %>
                   <%= reservation.room_number %>号室
                   ・<%= reservation.name %>
-                  <% if current_user.admin? %>・📞 <%= reservation.phone %><% end %>
+                  <% if current_user.admin? %>・📞 <%= reservation.phone.presence || "未登録" %><% end %>
                   ・大人<%= reservation.adult_count %>/子供<%= reservation.child_count %>
                 <% else %>
                   予約済み

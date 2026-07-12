@@ -31,7 +31,7 @@
       </div>
       <div class="receipt-row">
         <span class="label">📞 電話番号</span>
-        <span class="value"><%= @reservation.phone %></span>
+        <span class="value"><%= @reservation.phone.presence || "未登録" %></span>
       </div>
       <div class="receipt-row">
         <span class="label">🧑‍🤝‍🧑 人数</span>

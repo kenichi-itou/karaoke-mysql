@@ -14,48 +14,48 @@
     <div class="field-row">
       <div class="field-group">
         <div class="field-label">📅 利用日</div>
-        <%= form.date_field :date %>
+        <%= form.date_field :date, required: true %>
       </div>
       <div class="field-group">
         <div class="field-label">🕒 開始時間</div>
-        <%= form.time_field :start_time %>
+        <%= form.time_field :start_time, required: true %>
       </div>
       <div class="field-group">
         <div class="field-label">🕒 終了時間</div>
-        <%= form.time_field :end_time %>
+        <%= form.time_field :end_time, required: true %>
       </div>
     </div>
 
     <div class="field-row">
       <div class="field-group">
         <div class="field-label">🎶 利用設備</div>
-        <%= form.select :facility, [["カラオケルーム", "karaoke"], ["バーベキューコーナー", "bbq"]] %>
+        <%= form.select :facility, [["カラオケルーム", "karaoke"], ["バーベキューコーナー", "bbq"]], {}, required: true %>
       </div>
       <div class="field-group">
         <div class="field-label">🚪 部屋番号</div>
-        <%= form.text_field :room_number, placeholder: "例: 1234" %>
+        <%= form.text_field :room_number, placeholder: "例: 1234", required: true %>
       </div>
     </div>
 
     <div class="field-row">
       <div class="field-group">
         <div class="field-label">👤 予約者名</div>
-        <%= form.text_field :name, placeholder: "例: ヤマダ タロウ" %>
+        <%= form.text_field :name, placeholder: "例: ヤマダ タロウ", required: true %>
       </div>
       <div class="field-group">
         <div class="field-label">📞 電話番号</div>
-        <%= form.text_field :phone, placeholder: "例: 090-1234-5678" %>
+        <%= form.text_field :phone, placeholder: "例: 090-1234-5678", required: true %>
       </div>
     </div>
 
     <div class="field-row">
       <div class="field-group">
         <div class="field-label">🧑‍🤝‍🧑 大人の人数</div>
-        <%= form.number_field :adult_count, min: 0 %>
+        <%= form.number_field :adult_count, min: 0, required: true %>
       </div>
       <div class="field-group">
         <div class="field-label">🧒 子供の人数</div>
-        <%= form.number_field :child_count, min: 0 %>
+        <%= form.number_field :child_count, min: 0, required: true %>
       </div>
     </div>
 

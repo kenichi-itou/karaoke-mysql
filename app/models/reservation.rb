@@ -6,6 +6,12 @@ class Reservation < ApplicationRecord
   KARAOKE_FEE_PER_HOUR = 100 # カラオケルーム: 100円/時間
   BBQ_FEE = 100              # バーベキューコーナー: 100円/回
 
+  # 新規予約は全項目入力必須
+  validates :date, :start_time, :end_time, :facility,
+            :room_number, :name, :phone,
+            :adult_count, :child_count,
+            presence: true, on: :create
+
   validate :no_overlap
   validate :check_people
 

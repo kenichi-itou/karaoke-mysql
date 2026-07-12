@@ -18,6 +18,19 @@ class UsageReportsController < ApplicationController
     reservations.each { |r| @grand_by_facility[r.facility] += r.fee }
   end
 
+  # GET /usage_reports/by_room
+  # 部屋番号別（住民への月次請求用）: 部屋 => { 月 => [予約...] }
+  def by_room
+    reservations = Reservation.where.not(date: nil).order(:date, :start_time).to_a
+
+    @rooms = reservations
+      .group_by { |r| r.room_number.presence || "(未設定)" }
+      .sort.to_h
+      .transform_values do |rs|
+        rs.group_by { |r| r.date.strftime("%Y-%m") }.sort.reverse.to_h
+      end
+  end
+
   private
 
   def require_admin!

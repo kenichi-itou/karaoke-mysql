@@ -360,6 +360,35 @@ input:focus, select:focus {
 }
 
 /* ---------- Usage report (admin) ---------- */
+.report-subnav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.report-subnav .subnav-link,
+.report-subnav .subnav-current {
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.9em;
+  font-weight: 700;
+  text-decoration: none;
+}
+.report-subnav .subnav-current {
+  background: var(--neon-coral);
+  color: #fff;
+}
+.report-subnav .subnav-link {
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+.report-subnav .subnav-link:hover { color: var(--ink); border-color: var(--ink-soft); }
+.room-month-title {
+  font-weight: 700;
+  font-size: 0.95em;
+  color: var(--stage-navy);
+  margin: 14px 0 6px;
+}
 .report-grand {
   background: var(--stage-navy);
   color: #fff;

@@ -2,6 +2,11 @@
 
 <div class="section-title"><span class="dot"></span>使用料集計（管理人）</div>
 
+<div class="report-subnav">
+  <span class="subnav-current">月別で見る</span>
+  <%= link_to "部屋別で見る", by_room_usage_reports_path, class: "subnav-link" %>
+</div>
+
 <%# ---- 全期間の総合計 ---- %>
 <div class="report-grand">
   <div class="report-grand-title">全期間の総合計</div>

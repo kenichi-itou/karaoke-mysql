@@ -1,0 +1,54 @@
+<% wday = %w[日 月 火 水 木 金 土] %>
+
+<div class="section-title"><span class="dot"></span>部屋番号別 使用料集計（住民請求用）</div>
+
+<div class="report-subnav">
+  <%= link_to "月別で見る", usage_reports_path, class: "subnav-link" %>
+  <span class="subnav-current">部屋別で見る</span>
+</div>
+
+<% if @rooms.empty? %>
+  <p>集計対象の予約がありません。</p>
+<% else %>
+  <% @rooms.each do |room, months| %>
+    <div class="report-card">
+      <div class="report-month"><%= room == "(未設定)" ? room : "#{room}号室" %></div>
+
+      <% months.each do |month, reservations| %>
+        <% ym = month.split("-") %>
+        <div class="room-month-title"><%= ym[0] %>年<%= ym[1].to_i %>月</div>
+        <div class="table-scroll">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>使用日時</th>
+                <th>使用設備</th>
+                <th class="num">使用料</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% reservations.each do |r| %>
+                <tr>
+                  <td>
+                    <%= r.date.strftime("%-m/%-d") %>（<%= wday[r.date.wday] %>）
+                    <%= r.start_time.strftime("%H:%M") %>〜<%= r.end_time.strftime("%H:%M") %>
+                  </td>
+                  <td><%= r.facility_label %></td>
+                  <td class="num"><%= number_with_delimiter(r.fee) %>円</td>
+                </tr>
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">月間使用料（合計）</td>
+                <td class="num"><%= number_with_delimiter(reservations.sum(&:fee)) %>円</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= link_to "← 予約一覧に戻る", reservations_path, class: "link-back" %>

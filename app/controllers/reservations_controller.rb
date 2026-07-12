@@ -14,7 +14,11 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    @reservation = Reservation.new
+    # ログインユーザーのプロフィールから氏名・部屋番号を自動補完
+    @reservation = Reservation.new(
+      name: current_user.name,
+      room_number: current_user.room_number
+    )
   end
 
   # GET /reservations/1/edit

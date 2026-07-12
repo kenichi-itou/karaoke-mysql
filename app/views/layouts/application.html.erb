@@ -21,6 +21,9 @@
           <% if user_signed_in? %>
             <%= link_to "予約一覧・カレンダー", reservations_path %>
             <%= link_to "新規予約", new_reservation_path %>
+            <% if current_user.admin? %>
+              <%= link_to "使用料集計", usage_reports_path %>
+            <% end %>
             <span class="hero-user">
               <%= current_user.name.presence || current_user.email %>
               <% if current_user.admin? %><span class="role-tag">管理人</span><% end %>

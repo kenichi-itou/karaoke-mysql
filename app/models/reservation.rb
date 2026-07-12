@@ -2,11 +2,34 @@ class Reservation < ApplicationRecord
 
   belongs_to :user, optional: true
 
+  # 使用料
+  KARAOKE_FEE_PER_HOUR = 100 # カラオケルーム: 100円/時間
+  BBQ_FEE = 100              # バーベキューコーナー: 100円/回
+
   validate :no_overlap
   validate :check_people
 
   def facility_label
     facility == "karaoke" ? "カラオケルーム" : "バーベキューコーナー"
+  end
+
+  # 予約時間（時間単位、Float）。時刻未入力や逆転時は0。
+  def duration_hours
+    return 0 if start_time.blank? || end_time.blank?
+    seconds = end_time - start_time
+    seconds.positive? ? seconds / 3600.0 : 0
+  end
+
+  # 使用料（円）
+  def fee
+    case facility
+    when "karaoke"
+      (duration_hours * KARAOKE_FEE_PER_HOUR).round
+    when "bbq"
+      BBQ_FEE
+    else
+      0
+    end
   end
 
   def no_overlap

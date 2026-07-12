@@ -46,6 +46,21 @@
     <% end %>
   </div>
 
+  <div class="receipt-total">
+    <div class="receipt-total-line">
+      <span class="label">💰 使用料</span>
+      <span class="amount"><%= number_with_delimiter(@reservation.fee) %>円</span>
+    </div>
+    <div class="receipt-fee-note">
+      <% if @reservation.facility == "karaoke" %>
+        <% h = @reservation.duration_hours %>
+        カラオケルーム 100円/時間 × <%= (h % 1).zero? ? h.to_i : h %>時間
+      <% else %>
+        バーベキューコーナー 100円/回
+      <% end %>
+    </div>
+  </div>
+
   <% if owner_or_admin?(@reservation) %>
     <div class="receipt-actions">
       <%= link_to "この予約を編集", edit_reservation_path(@reservation), class: "btn" %>

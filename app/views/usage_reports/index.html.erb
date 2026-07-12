@@ -1,0 +1,36 @@
+<div class="section-title"><span class="dot"></span>使用料集計（管理人）</div>
+
+<% if @report.empty? %>
+  <p>集計対象の予約がありません。</p>
+<% else %>
+  <% @report.each do |month, rooms| %>
+    <% ym = month.split("-") %>
+    <div class="report-card">
+      <div class="report-month"><%= ym[0] %>年<%= ym[1].to_i %>月</div>
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>部屋番号</th>
+            <th class="num">使用料</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% rooms.sort.each do |room, total| %>
+            <tr>
+              <td><%= room %>号室</td>
+              <td class="num"><%= number_with_delimiter(total) %>円</td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>月合計</td>
+            <td class="num"><%= number_with_delimiter(rooms.values.sum) %>円</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+
+<%= link_to "← 予約一覧に戻る", reservations_path, class: "link-back" %>

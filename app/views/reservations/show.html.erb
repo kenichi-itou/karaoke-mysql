@@ -17,30 +17,41 @@
     </div>
     <div class="receipt-row">
       <span class="label">🎶 利用設備</span>
-      <span class="value"><%= @reservation.facility == "karaoke" ? "カラオケ" : "バーベキュー" %></span>
+      <span class="value"><%= @reservation.facility_label %></span>
     </div>
-    <div class="receipt-row">
-      <span class="label">🚪 部屋番号</span>
-      <span class="value"><%= @reservation.room_number %></span>
-    </div>
-    <div class="receipt-row">
-      <span class="label">👤 予約者名</span>
-      <span class="value"><%= @reservation.name %></span>
-    </div>
-    <div class="receipt-row">
-      <span class="label">📞 電話番号</span>
-      <span class="value"><%= @reservation.phone %></span>
-    </div>
-    <div class="receipt-row">
-      <span class="label">🧑‍🤝‍🧑 人数</span>
-      <span class="value">大人 <%= @reservation.adult_count %>名 ・ 子供 <%= @reservation.child_count %>名</span>
-    </div>
+
+    <% if owner_or_admin?(@reservation) %>
+      <div class="receipt-row">
+        <span class="label">🚪 部屋番号</span>
+        <span class="value"><%= @reservation.room_number %></span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">👤 予約者名</span>
+        <span class="value"><%= @reservation.name %></span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">📞 電話番号</span>
+        <span class="value"><%= @reservation.phone %></span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">🧑‍🤝‍🧑 人数</span>
+        <span class="value">大人 <%= @reservation.adult_count %>名 ・ 子供 <%= @reservation.child_count %>名</span>
+      </div>
+    <% else %>
+      <div class="receipt-row">
+        <span class="label">状態</span>
+        <span class="value">予約済み</span>
+      </div>
+      <div class="receipt-note">この時間帯は予約済みです。予約者の個人情報は本人と管理人のみ閲覧できます。</div>
+    <% end %>
   </div>
 
-  <div class="receipt-actions">
-    <%= link_to "この予約を編集", edit_reservation_path(@reservation), class: "btn" %>
-    <%= button_to "予約を削除", @reservation, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "この予約を削除しますか？" } } %>
-  </div>
+  <% if owner_or_admin?(@reservation) %>
+    <div class="receipt-actions">
+      <%= link_to "この予約を編集", edit_reservation_path(@reservation), class: "btn" %>
+      <%= button_to "予約を削除", @reservation, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "この予約を削除しますか？" } } %>
+    </div>
+  <% end %>
 </div>
 
 <%= link_to "← 予約一覧に戻る", reservations_path, class: "link-back" %>

@@ -1,7 +1,13 @@
 class Reservation < ApplicationRecord
 
+  belongs_to :user, optional: true
+
   validate :no_overlap
   validate :check_people
+
+  def facility_label
+    facility == "karaoke" ? "カラオケ" : "バーベキュー"
+  end
 
   def no_overlap
     return unless facility == "karaoke"

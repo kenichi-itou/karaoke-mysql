@@ -4,7 +4,11 @@
     <div class="date-number"><%= date.day %></div>
     <% reservations.each do |reservation| %>
       <div class="reservation-entry">
-        <%= link_to "#{reservation.start_time.strftime('%H:%M')} #{reservation.facility}", reservation %>
+        <% if owner_or_admin?(reservation) %>
+          <%= link_to "#{reservation.start_time.strftime('%H:%M')} #{reservation.facility_label}", reservation %>
+        <% else %>
+          <span><%= reservation.start_time.strftime('%H:%M') %> <%= reservation.facility_label %></span>
+        <% end %>
       </div>
     <% end %>
   </div>
@@ -18,21 +22,32 @@
   <% @reservations.each do |reservation| %>
     <div class="ticket-card">
       <div class="ticket-main">
-        <div class="ticket-date"><%= reservation.date.strftime("%Y/%m/%d (%a)") %></div>
+        <div class="ticket-date">
+          <%= reservation.date.strftime("%Y/%m/%d (%a)") %>
+          <% if owner_or_admin?(reservation) %>
+            <span class="mine-badge"><%= current_user.admin? ? "管理" : "自分の予約" %></span>
+          <% end %>
+        </div>
         <div class="ticket-meta">
           <%= reservation.start_time.strftime("%H:%M") %> - <%= reservation.end_time.strftime("%H:%M") %>
-          ・<%= reservation.room_number %>号室
-          ・<%= reservation.name %>
-          ・大人<%= reservation.adult_count %>/子供<%= reservation.child_count %>
+          <% if owner_or_admin?(reservation) %>
+            ・<%= reservation.room_number %>号室
+            ・<%= reservation.name %>
+            ・大人<%= reservation.adult_count %>/子供<%= reservation.child_count %>
+          <% else %>
+            ・予約済み
+          <% end %>
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 12px;">
-        <span class="ticket-badge"><%= reservation.facility %></span>
-        <div class="ticket-actions">
-          <%= link_to "詳細", reservation %>
-          <%= link_to "編集", edit_reservation_path(reservation) %>
-          <%= link_to "削除", reservation, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" }, class: "danger" %>
-        </div>
+        <span class="ticket-badge"><%= reservation.facility_label %></span>
+        <% if owner_or_admin?(reservation) %>
+          <div class="ticket-actions">
+            <%= link_to "詳細", reservation %>
+            <%= link_to "編集", edit_reservation_path(reservation) %>
+            <%= link_to "削除", reservation, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" }, class: "danger" %>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>

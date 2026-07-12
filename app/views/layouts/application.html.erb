@@ -18,8 +18,18 @@
           <div class="hero-tagline">マンション共用カラオケルーム予約システム</div>
         </div>
         <nav class="hero-nav">
-          <%= link_to "予約一覧・カレンダー", reservations_path %>
-          <%= link_to "新規予約", new_reservation_path %>
+          <% if user_signed_in? %>
+            <%= link_to "予約一覧・カレンダー", reservations_path %>
+            <%= link_to "新規予約", new_reservation_path %>
+            <span class="hero-user">
+              <%= current_user.name.presence || current_user.email %>
+              <% if current_user.admin? %><span class="role-tag">管理人</span><% end %>
+            </span>
+            <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "hero-nav-btn" %>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path %>
+            <%= link_to "新規登録", new_user_registration_path %>
+          <% end %>
         </nav>
       </div>
     </header>
@@ -27,6 +37,9 @@
     <main class="page">
       <% if notice %>
         <p class="flash-notice"><%= notice %></p>
+      <% end %>
+      <% if alert %>
+        <p class="flash-alert"><%= alert %></p>
       <% end %>
 
       <%= yield %>

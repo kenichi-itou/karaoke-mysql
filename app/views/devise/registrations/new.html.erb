@@ -1,0 +1,51 @@
+<div class="section-title"><span class="dot"></span>新規登録（住民）</div>
+
+<div class="auth-card">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <% if resource.errors.any? %>
+      <div class="flash-error-box">
+        <h2><%= pluralize(resource.errors.count, "件") %>のエラーにより登録できませんでした</h2>
+        <ul>
+          <% resource.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field-row">
+      <div class="field-group">
+        <div class="field-label">👤 お名前</div>
+        <%= f.text_field :name, placeholder: "例: ヤマダ タロウ" %>
+      </div>
+      <div class="field-group">
+        <div class="field-label">🚪 部屋番号</div>
+        <%= f.text_field :room_number, placeholder: "例: 1234" %>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">📧 メールアドレス</div>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "例: taro@example.com" %>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <div class="field-label">🔑 パスワード<% if @minimum_password_length %>（<%= @minimum_password_length %>文字以上）<% end %></div>
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "パスワード" %>
+      </div>
+      <div class="field-group">
+        <div class="field-label">🔑 パスワード（確認）</div>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "もう一度入力" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.submit "登録する", class: "btn" %>
+    </div>
+  <% end %>
+
+  <div class="auth-links">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

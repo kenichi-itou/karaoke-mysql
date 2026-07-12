@@ -1,8 +1,9 @@
 class ReservationsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_reservation, only: %i[ show edit update destroy ]
+  before_action :require_owner_or_admin!, only: %i[ edit update destroy ]
 
   # GET /reservations or /reservations.json
-# GET /reservations or /reservations.json
   def index
     @reservations = Reservation.order(:date, :start_time)
   end
@@ -22,11 +23,11 @@ class ReservationsController < ApplicationController
 
   # POST /reservations or /reservations.json
   def create
-    @reservation = Reservation.new(reservation_params)
+    @reservation = current_user.reservations.build(reservation_params)
 
     respond_to do |format|
       if @reservation.save
-        format.html { redirect_to @reservation, notice: "Reservation was successfully created." }
+        format.html { redirect_to @reservation, notice: "予約を受け付けました。" }
         format.json { render :show, status: :created, location: @reservation }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +40,7 @@ class ReservationsController < ApplicationController
   def update
     respond_to do |format|
       if @reservation.update(reservation_params)
-        format.html { redirect_to @reservation, notice: "Reservation was successfully updated.", status: :see_other }
+        format.html { redirect_to @reservation, notice: "予約を更新しました。", status: :see_other }
         format.json { render :show, status: :ok, location: @reservation }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +54,7 @@ class ReservationsController < ApplicationController
     @reservation.destroy!
 
     respond_to do |format|
-      format.html { redirect_to reservations_path, notice: "Reservation was successfully destroyed.", status: :see_other }
+      format.html { redirect_to reservations_path, notice: "予約を削除しました。", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -62,6 +63,13 @@ class ReservationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
       @reservation = Reservation.find(params[:id])
+    end
+
+    # 先約を勝手に編集・削除できないようにする（本人か管理人のみ許可）
+    def require_owner_or_admin!
+      unless owner_or_admin?(@reservation)
+        redirect_to reservations_path, alert: "他の住民の予約は編集・削除できません。"
+      end
     end
 
   def reservation_params

@@ -67,3 +67,6 @@ group :test do
 end
 
 gem "simple_calendar", "~> 2.0"
+
+# Flexible authentication solution for Rails [https://github.com/heartcombo/devise]
+gem "devise"

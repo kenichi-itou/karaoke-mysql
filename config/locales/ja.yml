@@ -1,0 +1,24 @@
+ja:
+  activerecord:
+    models:
+      user: "ユーザー"
+      reservation: "予約"
+    attributes:
+      user:
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認）"
+        current_password: "現在のパスワード"
+        remember_me: "ログイン状態を保持する"
+        name: "お名前"
+        room_number: "部屋番号"
+      reservation:
+        date: "利用日"
+        start_time: "開始時間"
+        end_time: "終了時間"
+        facility: "利用設備"
+        room_number: "部屋番号"
+        name: "予約者名"
+        phone: "電話番号"
+        adult_count: "大人の人数"
+        child_count: "子供の人数"

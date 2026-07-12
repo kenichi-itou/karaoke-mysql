@@ -70,3 +70,6 @@ gem "simple_calendar", "~> 2.0"
 
 # Flexible authentication solution for Rails [https://github.com/heartcombo/devise]
 gem "devise"
+
+# Locale data for Ruby / Rails (Japanese validation messages, etc.)
+gem "rails-i18n"

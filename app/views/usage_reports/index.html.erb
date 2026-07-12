@@ -1,34 +1,90 @@
+<% wday = %w[日 月 火 水 木 金 土] %>
+
 <div class="section-title"><span class="dot"></span>使用料集計（管理人）</div>
 
-<% if @report.empty? %>
+<%# ---- 全期間の総合計 ---- %>
+<div class="report-grand">
+  <div class="report-grand-title">全期間の総合計</div>
+  <div class="report-grand-row">
+    <span>🎤 カラオケルーム</span>
+    <span><%= number_with_delimiter(@grand_by_facility["karaoke"]) %>円</span>
+  </div>
+  <div class="report-grand-row">
+    <span>🍖 バーベキューコーナー</span>
+    <span><%= number_with_delimiter(@grand_by_facility["bbq"]) %>円</span>
+  </div>
+  <div class="report-grand-row total">
+    <span>総合計</span>
+    <span><%= number_with_delimiter(@grand_total) %>円</span>
+  </div>
+</div>
+
+<% if @months.empty? %>
   <p>集計対象の予約がありません。</p>
 <% else %>
-  <% @report.each do |month, rooms| %>
+  <% @months.each do |month, reservations| %>
     <% ym = month.split("-") %>
+    <% by_facility = reservations.group_by(&:facility).transform_values { |rs| rs.sum(&:fee) } %>
+    <% by_room = reservations.group_by { |r| r.room_number.presence || "(未設定)" }.transform_values { |rs| rs.sum(&:fee) } %>
+
     <div class="report-card">
       <div class="report-month"><%= ym[0] %>年<%= ym[1].to_i %>月</div>
-      <table class="report-table">
-        <thead>
-          <tr>
-            <th>部屋番号</th>
-            <th class="num">使用料</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% rooms.sort.each do |room, total| %>
+
+      <%# ---- 使用日時別 明細 ---- %>
+      <div class="table-scroll">
+        <table class="report-table">
+          <thead>
             <tr>
-              <td><%= room %>号室</td>
-              <td class="num"><%= number_with_delimiter(total) %>円</td>
+              <th>利用日</th>
+              <th>時間</th>
+              <th>部屋番号</th>
+              <th>設備</th>
+              <th class="num">使用料</th>
             </tr>
+          </thead>
+          <tbody>
+            <% reservations.each do |r| %>
+              <tr>
+                <td><%= r.date.strftime("%-m/%-d") %>（<%= wday[r.date.wday] %>）</td>
+                <td><%= r.start_time.strftime("%H:%M") %>〜<%= r.end_time.strftime("%H:%M") %></td>
+                <td><%= r.room_number.presence || "(未設定)" %></td>
+                <td><%= r.facility_label %></td>
+                <td class="num"><%= number_with_delimiter(r.fee) %>円</td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">月合計</td>
+              <td class="num"><%= number_with_delimiter(reservations.sum(&:fee)) %>円</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <%# ---- 設備別・部屋別内訳 ---- %>
+      <div class="report-breakdown">
+        <div class="breakdown-block">
+          <div class="breakdown-title">設備別</div>
+          <div class="breakdown-row">
+            <span>カラオケルーム</span>
+            <span><%= number_with_delimiter(by_facility["karaoke"] || 0) %>円</span>
+          </div>
+          <div class="breakdown-row">
+            <span>バーベキューコーナー</span>
+            <span><%= number_with_delimiter(by_facility["bbq"] || 0) %>円</span>
+          </div>
+        </div>
+        <div class="breakdown-block">
+          <div class="breakdown-title">部屋別</div>
+          <% by_room.sort.each do |room, total| %>
+            <div class="breakdown-row">
+              <span><%= room == "(未設定)" ? room : "#{room}号室" %></span>
+              <span><%= number_with_delimiter(total) %>円</span>
+            </div>
           <% end %>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td>月合計</td>
-            <td class="num"><%= number_with_delimiter(rooms.values.sum) %>円</td>
-          </tr>
-        </tfoot>
-      </table>
+        </div>
+      </div>
     </div>
   <% end %>
 <% end %>

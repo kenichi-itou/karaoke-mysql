@@ -3,18 +3,19 @@ class UsageReportsController < ApplicationController
   before_action :require_admin!
 
   # GET /usage_reports
-  # 月ごと・部屋ごとの使用料（月合計）
+  # 月ごとの明細（使用日時別）／設備別・部屋別内訳／全期間の総合計
   def index
-    reservations = Reservation.order(date: :desc)
+    reservations = Reservation.where.not(date: nil).order(:date, :start_time).to_a
 
-    # { "2026-07" => { "1234" => 合計, "2222" => 合計 }, ... }
-    @report = Hash.new { |hash, key| hash[key] = Hash.new(0) }
-    reservations.each do |r|
-      next if r.date.blank?
-      month = r.date.strftime("%Y-%m")
-      room = r.room_number.presence || "(未設定)"
-      @report[month][room] += r.fee
-    end
+    # 月(YYYY-MM) => [予約...]（新しい月から順に）
+    @months = reservations
+      .group_by { |r| r.date.strftime("%Y-%m") }
+      .sort.reverse.to_h
+
+    # 全期間の総合計・設備別
+    @grand_total = reservations.sum(&:fee)
+    @grand_by_facility = Hash.new(0)
+    reservations.each { |r| @grand_by_facility[r.facility] += r.fee }
   end
 
   private

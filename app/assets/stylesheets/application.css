@@ -360,14 +360,68 @@ input:focus, select:focus {
 }
 
 /* ---------- Usage report (admin) ---------- */
+.report-grand {
+  background: var(--stage-navy);
+  color: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  max-width: 680px;
+}
+.report-grand-title {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 800;
+  font-size: 1.1em;
+  margin-bottom: 12px;
+}
+.report-grand-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.95em;
+  color: rgba(255,255,255,0.85);
+}
+.report-grand-row.total {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.15em;
+}
+.report-grand-row.total span:last-child { color: var(--marquee-gold); }
+
 .report-card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 16px;
   padding: 20px 24px;
   margin-bottom: 20px;
-  max-width: 520px;
+  max-width: 680px;
 }
+.table-scroll { overflow-x: auto; }
+.report-breakdown {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+.breakdown-block { flex: 1; min-width: 200px; }
+.breakdown-title {
+  font-weight: 700;
+  font-size: 0.85em;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.9em;
+}
+.breakdown-row span:last-child { font-weight: 700; }
 .report-month {
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 800;

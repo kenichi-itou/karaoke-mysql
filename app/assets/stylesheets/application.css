@@ -529,6 +529,11 @@ input:focus, select:focus {
   max-width: 480px;
 }
 .auth-card .field-group { margin-bottom: 18px; }
+.field-hint {
+  margin-top: 5px;
+  font-size: 0.8em;
+  color: var(--ink-soft);
+}
 .remember-me {
   display: flex;
   align-items: center;

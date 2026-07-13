@@ -6,9 +6,8 @@ class ApplicationController < ActionController::Base
 
   # 新規登録・プロフィール更新で氏名・部屋番号も受け付ける
   def configure_permitted_parameters
-    extra = %i[name room_number]
-    devise_parameter_sanitizer.permit(:sign_up, keys: extra)
-    devise_parameter_sanitizer.permit(:account_update, keys: extra)
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name room_number signup_code])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[name room_number])
   end
 
   private

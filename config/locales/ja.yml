@@ -15,6 +15,7 @@ ja:
         remember_me: "ログイン状態を保持する"
         name: "お名前"
         room_number: "部屋番号"
+        signup_code: "登録コード"
       reservation:
         date: "利用日"
         start_time: "開始時間"

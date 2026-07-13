@@ -40,6 +40,12 @@
       </div>
     </div>
 
+    <div class="field-group">
+      <div class="field-label">🎫 登録コード</div>
+      <%= f.text_field :signup_code, placeholder: "管理組合から配布されたコード", required: true %>
+      <div class="field-hint">※ 管理組合から配布された登録コードを入力してください。</div>
+    </div>
+
     <div>
       <%= f.submit "登録する", class: "btn" %>
     </div>

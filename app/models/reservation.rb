@@ -19,6 +19,33 @@ class Reservation < ApplicationRecord
     facility == "karaoke" ? "カラオケルーム" : "バーベキューコーナー"
   end
 
+  # ---- 管理人の実施登録（カラオケ=鍵投函 / BBQ=席確保）----
+  def prepared?
+    prepared_at.present?
+  end
+
+  # 24時間以内に登録された新しい予約か
+  def recently_created?
+    created_at.present? && created_at >= 24.hours.ago
+  end
+
+  # 予約状況の色分け用ステータス（対応済み優先）
+  def admin_status
+    return :prepared if prepared?
+    return :new if recently_created?
+    nil
+  end
+
+  # 実施登録ボタンの文言（設備で出し分け）
+  def prepare_action_label
+    facility == "karaoke" ? "鍵を投函した" : "席を確保した"
+  end
+
+  # 実施済みラベル
+  def prepared_label
+    facility == "karaoke" ? "鍵投函済み" : "席確保済み"
+  end
+
   # 予約時間（時間単位、Float）。時刻未入力や逆転時は0。
   def duration_hours
     return 0 if start_time.blank? || end_time.blank?

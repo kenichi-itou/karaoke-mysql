@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "users/registrations" }
-  resources :reservations
+  resources :reservations do
+    member do
+      patch :prepare    # 実施登録（鍵投函/席確保）
+      patch :unprepare  # 実施登録の取り消し
+    end
+  end
   resources :usage_reports, only: [:index] do
     collection { get :by_room }
   end

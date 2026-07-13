@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_07_12_001551) do
+ActiveRecord::Schema[7.1].define(version: 2026_07_13_231209) do
   create_table "reservations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "date"
     t.time "start_time"
@@ -24,6 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_12_001551) do
     t.integer "adult_count"
     t.integer "child_count"
     t.bigint "user_id"
+    t.datetime "prepared_at"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 

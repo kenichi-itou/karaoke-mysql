@@ -1,7 +1,8 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_reservation, only: %i[ show edit update destroy ]
+  before_action :set_reservation, only: %i[ show edit update destroy prepare unprepare ]
   before_action :require_owner_or_admin!, only: %i[ edit update destroy ]
+  before_action :require_admin!, only: %i[ prepare unprepare ]
 
   # GET /reservations or /reservations.json
   def index
@@ -69,10 +70,31 @@ class ReservationsController < ApplicationController
     end
   end
 
+  # PATCH /reservations/1/prepare  実施登録（鍵投函/席確保）
+  def prepare
+    @reservation.update_column(:prepared_at, Time.current)
+    redirect_back fallback_location: reservations_path,
+                  notice: "実施登録しました（#{@reservation.prepared_label}）。"
+  end
+
+  # PATCH /reservations/1/unprepare  実施登録の取り消し
+  def unprepare
+    @reservation.update_column(:prepared_at, nil)
+    redirect_back fallback_location: reservations_path,
+                  notice: "実施登録を取り消しました。"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
       @reservation = Reservation.find(params[:id])
+    end
+
+    # 管理人のみ許可
+    def require_admin!
+      unless user_signed_in? && current_user.admin?
+        redirect_to reservations_path, alert: "この操作は管理人のみ可能です。"
+      end
     end
 
     # 先約を勝手に編集・削除できないようにする（本人か管理人のみ許可）

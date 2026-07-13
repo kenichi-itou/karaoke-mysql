@@ -295,6 +295,56 @@ h1, h2, h3, .brand {
   gap: 12px;
 }
 .ticket-main { display: flex; flex-direction: column; gap: 2px; }
+
+/* ---------- 予約状況の色分け（管理人）＋実施登録 ---------- */
+/* 1. 24時間以内の新規予約 = 薄い黄色 */
+.ticket-card.status-new { background: #FFF8DB; border-left-color: #E5B800; }
+.reservation-entry.status-new { background: #FFF3C4; border-left-color: #E5B800; }
+.reservation-entry.status-new a,
+.day-link .reservation-entry.status-new { color: #8a6d00; }
+/* 2. 実施登録済み（鍵投函/席確保）= 薄いグレー */
+.ticket-card.status-prepared { background: #ECECEF; border-left-color: #A9A9B4; }
+.reservation-entry.status-prepared { background: #E7E7EC; border-left-color: #A9A9B4; }
+.reservation-entry.status-prepared a { color: #6b6b78; }
+
+.new-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.65em;
+  font-weight: 800;
+  vertical-align: middle;
+  background: #E5B800;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+.ticket-admin { margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+.status-tag {
+  font-size: 0.82em;
+  font-weight: 700;
+  color: #5a5a66;
+}
+.status-tag.done { color: #4a7a4a; }
+.mini-btn {
+  font-family: inherit;
+  font-size: 0.82em;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.mini-btn:hover { border-color: var(--ink-soft); color: var(--ink); }
+.mini-btn.primary {
+  background: var(--stage-navy);
+  border-color: var(--stage-navy);
+  color: #fff;
+}
+.mini-btn.primary:hover { background: var(--stage-navy-light); color: #fff; }
+.ticket-admin form { display: inline; margin: 0; }
 .ticket-date { font-weight: 700; font-size: 1.05em; }
 .mine-badge {
   display: inline-block;

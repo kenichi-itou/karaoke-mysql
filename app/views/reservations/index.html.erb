@@ -11,7 +11,7 @@
       <%= link_to reservations_path(date: date.iso8601, anchor: "day-panel"),
                   class: "day-link#{' is-selected' if @selected_date == date}" do %>
         <% reservations.each do |reservation| %>
-          <span class="reservation-entry"><%= reservation.start_time.strftime('%H:%M') %> <%= reservation.facility_label %></span>
+          <span class="reservation-entry <%= reservation_status_class(reservation) %>"><%= reservation.start_time.strftime('%H:%M') %> <%= reservation.facility_label %></span>
         <% end %>
       <% end %>
     <% end %>
@@ -28,12 +28,15 @@
     <% if @day_reservations.any? %>
       <div class="reservation-list">
         <% @day_reservations.each do |reservation| %>
-          <div class="ticket-card">
+          <div class="ticket-card <%= reservation_status_class(reservation) %>">
             <div class="ticket-main">
               <div class="ticket-date">
                 <%= reservation.start_time.strftime("%H:%M") %> 〜 <%= reservation.end_time.strftime("%H:%M") %>
                 <% if owner_or_admin?(reservation) %>
                   <span class="mine-badge"><%= current_user.admin? ? "管理" : "自分の予約" %></span>
+                <% end %>
+                <% if current_user.admin? && reservation.recently_created? && !reservation.prepared? %>
+                  <span class="new-badge">NEW</span>
                 <% end %>
               </div>
               <div class="ticket-meta">
@@ -46,6 +49,16 @@
                   予約済み
                 <% end %>
               </div>
+              <% if current_user.admin? %>
+                <div class="ticket-admin">
+                  <% if reservation.prepared? %>
+                    <span class="status-tag done">✓ <%= reservation.prepared_label %></span>
+                    <%= button_to "取り消し", unprepare_reservation_path(reservation), method: :patch, class: "mini-btn" %>
+                  <% else %>
+                    <%= button_to reservation.prepare_action_label, prepare_reservation_path(reservation), method: :patch, class: "mini-btn primary" %>
+                  <% end %>
+                </div>
+              <% end %>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
               <span class="ticket-badge"><%= reservation.facility_label %></span>

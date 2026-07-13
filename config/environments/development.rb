@@ -42,6 +42,10 @@ Rails.application.configure do
   # Devise: URL options used when generating links in emails.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
+  # 開発環境: 実送信せず、送信メールを /letter_opener で確認できるようにする
+  config.action_mailer.delivery_method = :letter_opener_web
+  config.action_mailer.perform_deliveries = true
+
   config.action_mailer.perform_caching = false
 
   # Print deprecation notices to the Rails logger.
